@@ -3,15 +3,24 @@ from django.contrib.auth.models import User
 
 
 
-class Preferences(models.Model):
+class Preference(models.Model):
 	name = models.CharField(max_length = 50)
 
+	def __str__(self):
+		return self.name
 
-class Images(models.Model):
+
+class Image(models.Model):
 	photo = models.ImageField(null=True,blank=True,upload_to='media/')
-	tag = models.ForeignKey(Preferences,on_delete = models.CASCADE)
+	tag = models.ForeignKey(Preference,on_delete = models.CASCADE)
+
+	def __str__(self):
+		return self.tag
+
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User,on_delete = models.CASCADE)
-	choices = models.ManyToManyField(Preferences)
+	choices = models.ManyToManyField(Preference)
 
+	def __str__(self):
+		return self.tag
