@@ -15,7 +15,7 @@ class Image(models.Model):
 	tag = models.ForeignKey(Preference,on_delete = models.CASCADE)
 
 	def __str__(self):
-		return self.tag
+		return self.tag.name
 
 
 class UserProfile(models.Model):
@@ -23,4 +23,4 @@ class UserProfile(models.Model):
 	choices = models.ManyToManyField(Preference)
 
 	def __str__(self):
-		return self.tag
+		return self.user.username
