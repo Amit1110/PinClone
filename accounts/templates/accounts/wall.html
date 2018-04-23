@@ -1,0 +1,8 @@
+{% extends 'base_layout.html'%}
+
+{% block content%}
+  <h1>{{ userprofile.user.username }}</h1>
+  {% for img in images %}
+    <img src="{{ img.photo.url }}" >
+  {% endfor %}
+{% endblock%}

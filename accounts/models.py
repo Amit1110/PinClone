@@ -15,7 +15,7 @@ class Image(models.Model):
 	tag = models.ForeignKey(Preference,on_delete = models.CASCADE)
 
 	def __str__(self):
-		return self.tag.name
+		return self.photo.name[6:]
 
 
 class UserProfile(models.Model):

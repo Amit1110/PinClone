@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
-
+from . models import Image, UserProfile
+from django.contrib.auth.models import User
 # Create your views here.
 
 def signup_view(request):
@@ -11,7 +12,7 @@ def signup_view(request):
             user = form.save()
             #log the user in
             login(request, user)
-            return redirect('/about')
+            return redirect('/accounts/post')
     else:
         form = UserCreationForm()
     return render(request, 'accounts/signup.html', {'form':form})
@@ -27,7 +28,7 @@ def login_view(request):
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
             else:
-                return redirect('/about')
+                return redirect('/accounts/post')
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form':form})
@@ -36,3 +37,11 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         return redirect('/about')
+
+def userPost(request):
+    userprofile = UserProfile.objects.get(user=request.user)
+    images = []
+    for img in Image.objects.all():
+        if img.tag in userprofile.choices.all():
+            images.append(img)
+    return render(request, 'accounts/wall.html', {'userprofile':userprofile, 'images':images})
