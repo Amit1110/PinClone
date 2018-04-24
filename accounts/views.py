@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from . models import Image, UserProfile
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from . import forms
 # Create your views here.
 
 def signup_view(request):
@@ -12,7 +14,7 @@ def signup_view(request):
             user = form.save()
             #log the user in
             login(request, user)
-            return redirect('/accounts/post')
+            return redirect('/accounts/pref')
     else:
         form = UserCreationForm()
     return render(request, 'accounts/signup.html', {'form':form})
@@ -45,3 +47,16 @@ def userPost(request):
         if img.tag in userprofile.choices.all():
             images.append(img)
     return render(request, 'accounts/wall.html', {'userprofile':userprofile, 'images':images})
+
+@login_required(login_url = '/accounts/login/')
+def selectPref(request):
+    if request.method == 'POST':
+        form = forms.SelectPreferences(request.POST, request.FILES)
+        if form.is_valid():
+            #save preferences
+            instance = form.save()
+            instance.save()
+            return redirect('/accounts/post')
+    else:
+        form = forms.SelectPreferences()
+    return render(request, 'accounts/select_preferences.html', {'form': form})

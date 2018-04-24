@@ -1,0 +1,15 @@
+{% extends 'base_layout.html' %}
+
+
+{% block content %}
+  <div class="select-preferences">
+    <h2>Select your preferences</h2>
+    <form class="site-form" action="{% url 'accounts:selectPref' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{form}}
+      <input type="submit" value="Create">
+    </form>
+  </div>
+
+
+{% endblock%}
